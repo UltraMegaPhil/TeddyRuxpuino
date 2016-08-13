@@ -1,8 +1,8 @@
 #include "servo_motor.h"
 
-ServoMotor::ServoMotor(int dirA, int dirB, int pwm, int rd) :
-    pinDirA(dirA),
-    pinDirB(dirB),
+ServoMotor::ServoMotor(int fwdPin, int revPin, int pwm, int rd) :
+    forwardPin(fwdPin),
+    reversePin(revPin),
     pwmPin(pwm),
     readPin(rd),
     pwmBase(128),
@@ -16,8 +16,8 @@ void ServoMotor::initialize(int min, int max, int base) {
     pwmBase = base;
 
     pinMode(pwmPin, OUTPUT);
-    pinMode(pinDirA, OUTPUT);
-    pinMode(pinDirB, OUTPUT);
+    pinMode(forwardPin, OUTPUT);
+    pinMode(reversePin, OUTPUT);
 }
 
 void ServoMotor::update() {
@@ -52,8 +52,8 @@ void ServoMotor::setTargetPercentage(int t) {
 }
 
 void ServoMotor::stop() {
-    digitalWrite(pinDirA, LOW);
-    digitalWrite(pinDirB, LOW);
+    digitalWrite(forwardPin, LOW);
+    digitalWrite(reversePin, LOW);
     analogWrite(pwmPin, 0);
     target = -1;
 }
@@ -73,8 +73,8 @@ void ServoMotor::moveToTarget(int currentValue) {
         pinB = HIGH;
     }
 
-    digitalWrite(pinDirA, pinA);
-    digitalWrite(pinDirB, pinB);
+    digitalWrite(forwardPin, pinA);
+    digitalWrite(reversePin, pinB);
     analogWrite(pwmPin, pwmSpeed);
 }
 

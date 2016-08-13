@@ -5,7 +5,7 @@
 
 class ServoMotor {
     public:
-        ServoMotor(int dirA, int dirB, int pwm, int rd);
+        ServoMotor(int fwdPin, int revPin, int pwm, int rd);
         ~ServoMotor();
 
         void initialize(int min, int max, int base);
@@ -20,8 +20,8 @@ class ServoMotor {
         void moveToTarget(int currentValue);
         double percentageToTarget(int currentValue);
         
-        const int pinDirA;
-        const int pinDirB;
+        const int forwardPin;
+        const int reversePin;
         const int pwmPin;       
         const int readPin;
 
