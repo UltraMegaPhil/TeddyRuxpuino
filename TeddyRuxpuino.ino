@@ -2,26 +2,25 @@
 #include "serial_debugger.h"
 #include <Wire.h>
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 //     Motor control protocol (1 byte)
 //     -------------------------------
 //
 //
-//                                    -- Feature state
-//                                    |     0 = Fully open
-//                                    |     1 = 2/3 open
-//                                    |     2 = 1/3 open
-//                                    |     3 = Closed
-//                                    |
+//                                    -- Target drive mode    Direct drive mode
+//                                    |   0 = Fully open       0 = Stop motors
+//                                    |   1 = 2/3 open         1 = Forward
+//                                    |   2 = 1/3 open         2 = Reverse
+//                                    |   3 = Closed           3 = Invalid
+//                                    |                           (stop motors)
 //                                    ------
 //                                    |    |
 //    [ 7 ][ 6 ][ 5 ][ 4 ][ 3 ][ 2 ][ 1 ][ 0 ]
-//      |
-//      |
-//      -- Feature to be controlled
-//            0 = eyes
+//      |                        |
+//      |                        +---------------- Target or direct drive mode
+//      -- Feature to be controlled                    0 = Target
+//            0 = eyes                                 1 = Direct drive
 //            1 = mouth
 //
 //

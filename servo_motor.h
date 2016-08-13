@@ -14,11 +14,15 @@ class ServoMotor {
 
         void setTarget(int t);
         void setTargetPercentage(int t);
+        void directDrive(int direction);
         void stop();
 
     private:
         void moveToTarget(int currentValue);
         double percentageToTarget(int currentValue);
+        void directDrive();
+        void moveForward();
+        void moveReverse();
         
         const int forwardPin;
         const int reversePin;
@@ -30,6 +34,7 @@ class ServoMotor {
         int pwmBase;
 
         int target;
+        int directDriveDirection;
 };
 
 #endif

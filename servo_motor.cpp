@@ -6,7 +6,8 @@ ServoMotor::ServoMotor(int fwdPin, int revPin, int pwm, int rd) :
     pwmPin(pwm),
     readPin(rd),
     pwmBase(128),
-    target(-1) {}
+    target(-1),
+    directDriveDirection(0) {}
 
 ServoMotor::~ServoMotor() {}
 
@@ -21,10 +22,15 @@ void ServoMotor::initialize(int min, int max, int base) {
 }
 
 void ServoMotor::update() {
-    double input = analogRead(readPin);
-
-    if(target != -1) {
-        moveToTarget(input);
+    if(target != -1){
+        double input = analogRead(readPin);
+    
+        if(target != -1) {
+            moveToTarget(input);
+        }
+    } else {
+        // Direct drive
+        directDrive();        
     }
 }
 
@@ -51,11 +57,17 @@ void ServoMotor::setTargetPercentage(int t) {
     setTarget(rangeVal);
 }
 
+void ServoMotor::directDrive(int direction) {
+    directDriveDirection = direction;
+    target  = -1;    
+}
+
 void ServoMotor::stop() {
     digitalWrite(forwardPin, LOW);
     digitalWrite(reversePin, LOW);
     analogWrite(pwmPin, 0);
     target = -1;
+    directDriveDirection = 0;
 }
 
 void ServoMotor::moveToTarget(int currentValue) {
@@ -82,5 +94,27 @@ double ServoMotor::percentageToTarget(int currentValue) {
     double delta = abs(currentValue - target);
     double range = (rangeMax - rangeMin);
     return (delta / range);
+}
+
+void ServoMotor::directDrive() {
+    if(directDriveDirection > 0) {
+        moveForward();    
+    } else if(directDriveDirection < 0) {
+        moveReverse();    
+    } else {
+        stop();    
+    }
+}
+
+void ServoMotor::moveForward() {
+    digitalWrite(forwardPin, HIGH);
+    digitalWrite(reversePin, LOW);
+    analogWrite(pwmPin, HIGH);
+}
+
+void ServoMotor::moveReverse() {
+    digitalWrite(forwardPin, HIGH);
+    digitalWrite(reversePin, LOW);
+    analogWrite(pwmPin, HIGH);
 }
 
