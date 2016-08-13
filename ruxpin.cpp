@@ -2,8 +2,8 @@
 
 // Motor A (mouth)
 const int PWMA = 3;             // Speed control 
-const int AIN1 = 4;             // Direction
-const int AIN2 = 5;             // Direction
+const int AIN1 = 5;             // Direction
+const int AIN2 = 4;             // Direction
 const int POTA = 7;             // Potentiometer
 const int RANGE_MIN_A = 300;    // Mouth closed
 const int RANGE_MAX_A = 940;    // Mouth open
@@ -64,6 +64,21 @@ void Ruxpin::setFeatureState(Feature feature, FeatureStates state) {
 
         case MOUTH:
             mouth.setTargetPercentage(percentage);
+            break;
+
+        default:
+            break;
+    }
+}
+
+void Ruxpin::setDirectDriveDirection(Feature feature, int direction) {
+    switch(feature) {
+        case EYES:
+            eyes.directDrive(direction);
+            break;
+
+        case MOUTH:
+            mouth.directDrive(direction);
             break;
 
         default:

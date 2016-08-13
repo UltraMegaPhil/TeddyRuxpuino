@@ -32,6 +32,7 @@ class Ruxpin {
         void disable();
 
         void setFeatureState(Feature feature, FeatureStates state);
+        void setDirectDriveDirection(Feature feature, int direction);
 
     private:
         ServoMotor eyes;

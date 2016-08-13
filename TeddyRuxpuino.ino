@@ -90,23 +90,53 @@ void receiveI2C(int byteCount) {
         int readByte = Wire.read();
         if(readByte >= 0) {
             serial_println_val("Received:", byteCount);
-            
-            Ruxpin::Feature feature     = (Ruxpin::Feature)((readByte & 0x80) >> 7);
-            Ruxpin::FeatureStates state = (Ruxpin::FeatureStates)(readByte & 0x03);
-
-            if(feature == Ruxpin::MOUTH) {
-                serial_println("  Moving mouth");    
+            if(readByte & 0x04) {
+                processDirectDriveData(readByte);
             } else {
-                serial_println("  Moving eyes");                
+                processServoDriveDate(readByte);
             }
-            serial_println_val("    State: ", state);
-
-            ruxpin.setFeatureState(feature, state);
         }
     }
 }
 
 void sendI2C() {
     // Nothing required right now    
+}
+
+Ruxpin::Feature getFeatureFromData(int dataByte) {
+    return (Ruxpin::Feature)((dataByte & 0x80) >> 7);
+}
+
+void processDirectDriveData(int dataByte) {
+    Ruxpin::Feature feature = getFeatureFromData(dataByte);
+    int driveVal = (dataByte & 0x03);
+
+    int directDrive = 0;
+    switch(driveVal) {
+        case 1:
+            directDrive = 1;
+            break;
+        case 2:
+            directDrive = -1;
+            break;
+        default:
+            break;
+    }
+                
+    serial_println("   Direct Drive");
+    serial_println_val("    Value: ", directDrive);
+
+    ruxpin.setDirectDriveDirection(feature, directDrive);
+}
+
+void processServoDriveDate(int dataByte) {
+    Ruxpin::Feature feature = getFeatureFromData(dataByte);
+    int driveVal = (dataByte & 0x03);
+    Ruxpin::FeatureStates state = (Ruxpin::FeatureStates)(driveVal);
+    
+    serial_println("   Servo mode");
+    serial_println_val("    State: ", state);
+    
+    ruxpin.setFeatureState(feature, state);
 }
 

@@ -1,4 +1,5 @@
 #include "servo_motor.h"
+#include "serial_debugger.h"
 
 ServoMotor::ServoMotor(int fwdPin, int revPin, int pwm, int rd) :
     forwardPin(fwdPin),
@@ -109,12 +110,12 @@ void ServoMotor::directDrive() {
 void ServoMotor::moveForward() {
     digitalWrite(forwardPin, HIGH);
     digitalWrite(reversePin, LOW);
-    analogWrite(pwmPin, HIGH);
+    digitalWrite(pwmPin, HIGH);
 }
 
 void ServoMotor::moveReverse() {
-    digitalWrite(forwardPin, HIGH);
-    digitalWrite(reversePin, LOW);
-    analogWrite(pwmPin, HIGH);
+    digitalWrite(forwardPin, LOW);
+    digitalWrite(reversePin, HIGH);
+    digitalWrite(pwmPin, HIGH);
 }
 
