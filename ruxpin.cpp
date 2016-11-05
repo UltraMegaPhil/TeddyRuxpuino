@@ -14,7 +14,7 @@ const int PWMB = 9;             // Speed control
 const int BIN1 = 7;             // Direction
 const int BIN2 = 8;             // Direction
 const int POTB = 6;             // Potentiometer
-const int RANGE_MIN_B = 300;    // Eyes open
+const int RANGE_MIN_B = 200;    // Eyes open
 const int RANGE_MAX_B = 665;    // Eyes closed
 
 const int STBY_PIN = 6;
